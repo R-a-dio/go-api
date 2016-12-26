@@ -9,6 +9,7 @@ import (
 
 func startServer() error {
 	srv := http.Server{
+		Addr:    "localhost:5500",
 		Handler: http.HandlerFunc(APIHandler),
 	}
 
@@ -22,7 +23,9 @@ func APIHandler(rw http.ResponseWriter, r *http.Request) {
 	js.Main.Queue = apiQueue.Load().([]ListEntryAPI)
 	js.Main.LastPlayed = apiLastPlayed.Load().([]ListEntryAPI)
 
-	err := json.NewEncoder(rw).Encode(js)
+	e := json.NewEncoder(rw)
+	e.SetEscapeHTML(false)
+	err := e.Encode(js)
 	if err != nil {
 		log.Printf("json encoding error: %s", err)
 	}

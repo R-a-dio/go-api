@@ -13,33 +13,29 @@ var (
 )
 
 func startUpdater() {
-	go mainUpdater()
-	go listUpdater()
+	go newUpdater(mainUpdateTickrate, queryMain)
+	go newUpdater(listUpdateTickrate, queryLists)
 }
 
-func mainUpdater() {
-	ticker := time.NewTicker(mainUpdateTickrate)
+func newUpdater(tickrate time.Duration, fn func()) {
+	ticker := time.NewTicker(tickrate)
 	defer ticker.Stop()
 
+	fn()
 	for range ticker.C {
-		var a API
-		err := mainStmt.QueryRowx().StructScan(&a)
-		if err != nil {
-			log.Printf("database error: %s", err)
-			continue
-		}
-
-		apiMain.Store(a)
+		fn()
 	}
 }
 
-func listUpdater() {
-	ticker := time.NewTicker(listUpdateTickrate)
-	defer ticker.Stop()
-
-	for range ticker.C {
-		queryLists()
+func queryMain() {
+	var a API
+	err := mainStmt.QueryRowx().StructScan(&a)
+	if err != nil {
+		log.Printf("database error: %s", err)
+		return
 	}
+
+	apiMain.Store(a)
 }
 
 func queryLists() {

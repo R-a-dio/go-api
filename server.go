@@ -23,6 +23,10 @@ func APIHandler(rw http.ResponseWriter, r *http.Request) {
 	js.Main.Queue = apiQueue.Load().([]ListEntryAPI)
 	js.Main.LastPlayed = apiLastPlayed.Load().([]ListEntryAPI)
 
+	h := rw.Header()
+	h.Add("Content-Type", "application/json")
+	h.Add("Access-Control-Allow-Origin", "*")
+
 	e := json.NewEncoder(rw)
 	e.SetEscapeHTML(false)
 	err := e.Encode(js)

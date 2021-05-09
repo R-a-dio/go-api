@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strings"
+)
+
 type jsonMain struct {
 	Main API `json:"main"`
 }
@@ -25,6 +30,30 @@ type API struct {
 
 	Queue      []ListEntryAPI `json:"queue"`
 	LastPlayed []ListEntryAPI `json:"lp"`
+	Tags       Tags           `json:"tags" db:"tags"`
+}
+
+type Tags []string
+
+func (t *Tags) Scan(src interface{}) error {
+	// handle NULL
+	if src == nil {
+		*t = []string{}
+		return nil
+	}
+
+	var s string
+	switch v := src.(type) {
+	case string:
+		s = v
+	case []byte:
+		s = string(v)
+	default:
+		return fmt.Errorf("unknown type %t", src)
+	}
+
+	*t = strings.Split(s, " ")
+	return nil
 }
 
 type DJApi struct {

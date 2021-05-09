@@ -73,5 +73,5 @@ type ListEntryAPI struct {
 	Metadata  string `json:"meta" db:"meta"`
 	Time      string `json:"time"`
 	Type      int    `json:"type" db:"type"`
-	Timestamp int64  `json:"timestamp" db:"time"`
+	Timestamp int64  `json:"timestamp" db:"timestamp"`
 }

@@ -19,12 +19,12 @@ func openDatabase(dsn string) error {
 		return err
 	}
 
-	lastPlayedStmt, err = Database.Preparex("SELECT esong.meta AS meta, UNIX_TIMESTAMP(eplay.dt) AS time FROM `eplay` LEFT JOIN `esong` ON eplay.isong = esong.id ORDER BY eplay.dt DESC LIMIT 5;")
+	lastPlayedStmt, err = Database.Preparex("SELECT esong.meta AS meta, UNIX_TIMESTAMP(eplay.dt) AS timestamp FROM `eplay` LEFT JOIN `esong` ON eplay.isong = esong.id ORDER BY eplay.dt DESC LIMIT 5;")
 	if err != nil {
 		return err
 	}
 
-	queueStmt, err = Database.Preparex("SELECT meta AS meta, UNIX_TIMESTAMP(time) AS time, type FROM `queue` ORDER BY `time` ASC LIMIT 5;")
+	queueStmt, err = Database.Preparex("SELECT meta AS meta, UNIX_TIMESTAMP(time) AS timestamp, type FROM `queue` ORDER BY `time` ASC LIMIT 5;")
 	if err != nil {
 		return err
 	}
@@ -35,13 +35,13 @@ func openDatabase(dsn string) error {
 		listeners,
 		bitrate,
 		djid,
-        isafkstream,
+		isafkstream,
 		isstreamdesk,
 		start_time,
 		end_time,
 		lastset,
 		trackid, 
-        thread,
+		thread,
 		requesting,
 		djs.djname,
 		djtext, 
@@ -49,7 +49,7 @@ func openDatabase(dsn string) error {
 		visible,
 		css,
 		djcolor,
-        theme_id,
+		theme_id,
 		djs.priority,
 		role,
 		tracks.tags

@@ -34,6 +34,9 @@ func queryMain() {
 		log.Printf("database error: %s", err)
 		return
 	}
+	// sqlx seems to have changed something so we can't access the djs.djname field
+	// from inside of StructScan anymore. So we set it explicitly here
+	a.DJ.Name = a.DJName
 
 	apiMain.Store(a)
 }

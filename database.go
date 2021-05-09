@@ -50,9 +50,9 @@ func openDatabase(dsn string) error {
 		css,
 		djcolor,
 		theme_id,
-		djs.priority,
+		djs.priority AS priority,
 		role,
-		tracks.tags
+		tracks.tags AS tags
 	FROM
 		streamstatus
 	JOIN
